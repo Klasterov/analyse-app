@@ -1,0 +1,68 @@
+.dropdown-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 20px;
+    padding: 10px;
+}
+
+.styled-button {
+    background-color: #007bff;
+    color: black;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.styled-button:hover {
+    background-color: #0056b3;
+}
+
+.MuiSelect-root {
+    background-color: #fff;
+    border-radius: 50px;
+    padding: 8px;
+    height: 60px;
+    width: 360px;
+    text-align: center;
+    border: none;
+}
+
+.MuiPaper-root {
+    border-radius: 50px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.MuiMenuItem-root {
+    padding: 8px 16px;
+}
+
+.popup {
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 8px;
+}
+
+.animated-listbox {
+    position: relative;
+    z-index: 10;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 8px;
+}
+
+.placement-bottom {
+    top: 100%;
+}
+
+.placement-top {
+    bottom: 100%;
+}

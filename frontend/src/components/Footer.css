@@ -1,0 +1,40 @@
+.footer{
+    position: relative;
+    bottom: 0;
+    background-color: #698FA2;
+}
+
+.footer-content{
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin-top: 50px;
+    align-items: center;
+}
+
+.footer-content p{
+    font-size: 18px;
+    color: white;
+    width: 400px;
+    text-align: center;
+}
+
+.footer-links{
+    list-style: none;
+    margin-top: 30px;
+    width: 400px;
+}
+
+.footer-links li{
+    margin: 0 30px;
+    font-size: 16px;
+    color: white;
+    transition: .3s ease;
+    cursor: pointer;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.footer-links li:hover{
+    color: black;
+}

@@ -1,0 +1,45 @@
+.about-container {
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.about-container h1 {
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: white;
+  margin-top: 80px;
+}
+
+.text-content{
+    color: white;
+}
+
+.text-content p{
+    font-size: 18px;
+    font-weight: 100;
+    width: 1000px;
+    margin-bottom: 25px;
+}
+.text-content:last-child{
+    margin-bottom: 100px;
+}
+
+.text-content p span{
+    font-weight: bold;
+    color: white;
+}
+
+@media screen and (max-width: 800px) {
+    .about-container h1 {
+        font-size: 28px;
+    }
+    
+    .text-content p {
+        font-size: 16px;
+        width: auto;
+    }
+    
+}

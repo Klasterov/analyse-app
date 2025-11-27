@@ -1,0 +1,82 @@
+.analysis-reg h1 {
+    font-size: 32px;
+    margin-bottom: 120px;
+    margin-top: 150px;
+    text-align: center;
+    color: white;
+    font-weight: 400;
+}
+
+.chart-container{
+    margin-bottom: 20px;
+}
+
+.chart{
+    margin-top: 55px;
+    background-color: white;
+    border-radius: 25px;
+    top: -60px;
+}
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+}
+
+.chart-controls-inside {
+    position: absolute;
+    top: 10px;
+    left: 85%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 10; 
+}
+
+.chart-controls-inside button {
+    background-color: transparent;
+    color: black;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    opacity: 0.5;
+    transition: opacity 0.3s ease;
+}
+
+.chart-controls-inside button.active {
+    opacity: 2;
+    font-weight: 900;
+}
+
+.drop-down{
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 50px;
+}
+
+@media screen and (max-width: 800px) {
+    .analysis-reg h1 {
+        font-size: 28px;
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+
+    .chart-container {
+        width: auto;
+        
+    }
+
+    .chart-controls-inside {
+        top: 5px;
+        left: 90%;
+        flex-direction: column;
+    }
+
+    .chart-controls-inside button {
+        font-size: 12px;
+        
+    }
+    
+}
