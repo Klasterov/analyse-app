@@ -5,15 +5,17 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "migrate": "docker-compose exec backend npx node-pg-migrate up",
-    "migrate:undo": "docker-compose exec backend npx node-pg-migrate down",
-    "migrate:undo:all": "docker-compose exec app npx node-pg-migrate reset"
+    "migrate": "npx node-pg-migrate up",
+    "migrate:undo": "npx node-pg-migrate down",
+    "migrate:undo:all": "npx node-pg-migrate reset",
+    "dev": "npx nodemon src/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^3.0.2",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
