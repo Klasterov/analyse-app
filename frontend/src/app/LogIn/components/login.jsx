@@ -2,13 +2,13 @@
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Container } from "react-bootstrap";
-import api from "../../../api"; 
+import api from "../../../api";
 import "./login.css";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState(""); 
+  const [name, setName] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
   const [messages, setMessages] = useState([]);
   const router = useRouter();
@@ -24,18 +24,19 @@ export default function Login() {
 
     try {
       if (isRegistering) {
-        const res = await api.post("/api/auth/register", { name, email, password });
+        await api.post("/api/auth/register", { name, email, password });
         newMessages.push("Регистрация успешна! Теперь можно войти.");
         setIsRegistering(false);
       } else {
         const res = await api.post("/api/auth/login", { email, password });
         newMessages.push("Вход успешен!");
-        localStorage.setItem("token", res.data.token); 
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
         router.push("/dashboard");
       }
     } catch (err) {
-      if (err.response?.data?.error) {
-        newMessages.push(err.response.data.error);
+      if (err.response) {
+        newMessages.push(`Ошибка ${err.response.status}: ${err.response.data.error || "Неизвестная ошибка"}`);
       } else {
         newMessages.push("Ошибка сервера");
       }

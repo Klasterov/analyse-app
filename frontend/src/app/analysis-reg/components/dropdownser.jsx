@@ -1,30 +1,22 @@
-import React from "react";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import "./dropdown.css";
+"use client";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-const services = [
-  { value: "none", label: "Selectează serviciul" },
-  { value: "Gaze naturale", label: "Gaze naturale" },
-  { value: "Energie electrica", label: "Energie electrică" },
-  { value: "Energie termica", label: "Energie termică" },
-  { value: "Apa si canalizare", label: "Apă și canalizare" }
-];
+export default function DropDownser({ selectedService, setSelectedService }) {
+  const [services, setServices] = useState([]);
 
-export default function DropDownser({ selectedRegion, selectedService, setSelectedService }) {
+  useEffect(() => {
+    axios.get("http://localhost:5000/api/analysis/services")
+      .then(res => setServices(res.data))
+      .catch(err => console.error(err));
+  }, []);
+
   return (
-    <div className="dropdown-container">
-      <Select
-        id="service-select"
-        value={selectedService}
-        onChange={(e) => setSelectedService(e.target.value)}
-        disabled={selectedRegion === "none"}>
-        {services.map((option, index) => (
-          <MenuItem key={option.value} value={option.value} disabled={index === 0}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </Select>
-    </div>
+    <select value={selectedService} onChange={e => setSelectedService(e.target.value)}>
+      <option value="none">Выберите сервис</option>
+      {services.map((s, idx) => (
+        <option key={idx} value={s}>{s}</option>
+      ))}
+    </select>
   );
 }

@@ -1,25 +1,22 @@
-import React from "react";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
-import "./dropdown.css";
-
-const regions = [
-  { value: "none", label: "Selectează regiunea" },
-  { value: "Nord", label: "Nord" },
-  { value: "Centru", label: "Centru" },
-  { value: "Sud", label: "Sud" }
-];
+"use client";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function DropDownreg({ selectedRegion, setSelectedRegion }) {
+  const [regions, setRegions] = useState([]);
+
+  useEffect(() => {
+    axios.get("http://localhost:5000/api/analysis/regions")
+      .then(res => setRegions(res.data))
+      .catch(err => console.error(err));
+  }, []);
+
   return (
-    <div className="dropdown-container">
-      <Select id="region-select" value={selectedRegion} onChange={(e) => setSelectedRegion(e.target.value)}>
-        {regions.map((option, index) => (
-          <MenuItem key={option.value} value={option.value} disabled={index === 0}>
-            {option.label}
-          </MenuItem>
-        ))}
-      </Select>
-    </div>
+    <select value={selectedRegion} onChange={e => setSelectedRegion(e.target.value)}>
+      <option value="none">Выберите регион</option>
+      {regions.map((r, idx) => (
+        <option key={idx} value={r}>{r}</option>
+      ))}
+    </select>
   );
 }

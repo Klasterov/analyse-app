@@ -38,6 +38,7 @@ exports.up = (pgm) => {
   `);
 };
 
+
 exports.down = (pgm) => {
   pgm.dropTable('meter_readings');
   pgm.dropTable('users');
