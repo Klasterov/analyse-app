@@ -52,25 +52,45 @@ const authMiddleware = require('../middlewares/authMiddleware');
  */
 router.post('/add', authMiddleware, async (req, res) => {
   const { month, previous_value, current_value } = req.body;
-  const userId = req.userId;
+  // support both req.user.id and req.userId depending on middleware
+  const userId = req.user?.id || req.userId;
+
+  console.log('POST /meter-readings/add called, userId=', userId, 'body=', req.body);
+
+  if (!userId) {
+    console.error('No authenticated user id found on request');
+    return res.status(401).json({ error: 'Unauthorized' });
+  }
 
   if (!month || previous_value == null || current_value == null) {
+    console.warn('Missing fields in request body:', req.body);
     return res.status(400).json({ error: 'Missing required fields' });
   }
 
   const difference = current_value - previous_value;
 
   try {
+    // Use upsert: if a reading for same user/month exists, update it
     const result = await pool.query(
       `INSERT INTO meter_readings (user_id, month, previous_value, current_value, difference)
        VALUES ($1, $2, $3, $4, $5)
+       ON CONFLICT (user_id, month) DO UPDATE
+         SET previous_value = EXCLUDED.previous_value,
+             current_value = EXCLUDED.current_value,
+             difference = EXCLUDED.difference,
+             updated_at = NOW()
        RETURNING *`,
       [userId, month, previous_value, current_value, difference]
     );
 
+    console.log('Upserted meter_reading:', result.rows[0]);
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    console.error('Error adding meter reading:', err);
+    console.error('Error adding meter reading:', err?.message || err, err?.stack || '');
+    // If it's a DB error about missing table/column, return a helpful message
+    if (err && err.code) {
+      return res.status(500).json({ error: 'Database error', details: err.message });
+    }
     res.status(500).json({ error: 'Internal server error' });
   }
 });

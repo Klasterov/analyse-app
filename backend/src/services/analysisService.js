@@ -51,6 +51,20 @@ class AnalysisService {
     const result = await pool.query(`SELECT DISTINCT service FROM analysis_data`);
     return result.rows.map(r => r.service);
   }
+
+  async getLatestMonthData(region, service) {
+    const result = await pool.query(
+      `SELECT * FROM analysis_data 
+       WHERE region=$1 AND service=$2 AND period='month'
+       ORDER BY created_at DESC 
+       LIMIT 1`,
+      [region, service]
+    );
+    return result.rows[0] ? {
+      ...result.rows[0],
+      values: result.rows[0].values.map(Number)
+    } : null;
+  }
 }
   
 

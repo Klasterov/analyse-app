@@ -2,39 +2,116 @@
     position: relative;
     bottom: 0;
     background-color: #698FA2;
+    width: 100%;
 }
 
 .footer-content{
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
-    margin-top: 50px;
+    margin-top: clamp(30px, 5vw, 50px);
     align-items: center;
+    gap: clamp(20px, 3vw, 30px);
+    padding: clamp(15px, 3vw, 30px);
+    box-sizing: border-box;
 }
 
 .footer-content p{
-    font-size: 18px;
+    font-size: clamp(13px, 3vw, 18px);
     color: white;
-    width: 400px;
+    width: clamp(90vw, 95%, 400px);
     text-align: center;
+    line-height: 1.6;
 }
 
 .footer-links{
     list-style: none;
-    margin-top: 30px;
-    width: 400px;
+    margin-top: clamp(15px, 3vw, 30px);
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(15px, 3vw, 30px);
+    padding: 0 clamp(10px, 2vw, 20px);
+    box-sizing: border-box;
 }
 
 .footer-links li{
-    margin: 0 30px;
-    font-size: 16px;
+    font-size: clamp(12px, 2.5vw, 16px);
     color: white;
-    transition: .3s ease;
+    transition: color 0.3s ease;
     cursor: pointer;
     font-weight: bold;
     text-transform: uppercase;
+    white-space: nowrap;
 }
 
 .footer-links li:hover{
     color: black;
+}
+
+@media screen and (max-width: 1024px) {
+    .footer-content{
+        justify-content: center;
+        margin-top: clamp(25px, 4vw, 40px);
+        gap: clamp(15px, 2.5vw, 25px);
+        padding: clamp(12px, 2.5vw, 25px);
+    }
+
+    .footer-content p{
+        font-size: clamp(12px, 2.8vw, 16px);
+        width: clamp(85vw, 90%, 380px);
+    }
+
+    .footer-links li{
+        font-size: clamp(11px, 2.3vw, 14px);
+        margin: clamp(5px, 1vw, 15px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .footer-content{
+        flex-direction: column;
+        margin-top: clamp(20px, 3vw, 30px);
+        gap: clamp(12px, 2vw, 20px);
+        padding: clamp(12px, 2vw, 20px);
+    }
+
+    .footer-content p{
+        font-size: clamp(11px, 2.5vw, 14px);
+        width: clamp(90vw, 95%, 100%);
+    }
+
+    .footer-links{
+        margin-top: clamp(12px, 2vw, 20px);
+        gap: clamp(10px, 2vw, 20px);
+        padding: clamp(8px, 1.5vw, 15px);
+    }
+
+    .footer-links li{
+        font-size: clamp(10px, 2vw, 12px);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .footer-content{
+        padding: clamp(10px, 1.5vw, 15px);
+        margin-top: clamp(15px, 2.5vw, 20px);
+        gap: clamp(10px, 1.5vw, 15px);
+    }
+
+    .footer-content p{
+        font-size: clamp(10px, 2vw, 12px);
+        width: 100%;
+    }
+
+    .footer-links{
+        margin-top: clamp(10px, 1.5vw, 15px);
+        gap: clamp(8px, 1.5vw, 12px);
+        padding: clamp(6px, 1vw, 10px);
+    }
+
+    .footer-links li{
+        font-size: clamp(9px, 1.5vw, 11px);
+    }
 }

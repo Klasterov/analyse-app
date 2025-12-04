@@ -1,51 +1,111 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Tabs from "./components/Tabs";
+import AnalysisForm from "./components/AnalysisForm";
+import AnalysisTable from "./components/AnalysisTable";
+import PricesForm from "./components/PricesForm";
+import PricesTable from "./components/PricesTable";
+
+const globalStyles = {
+  body: {
+    backgroundColor: "transparent",
+    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    margin: "0",
+    padding: "0"
+  },
+  container: {
+    maxWidth: "1200px",
+    margin: "0 auto",
+    padding: "clamp(15px, 4vw, 30px)"
+  },
+  header: {
+    marginBottom: "clamp(20px, 5vw, 30px)"
+  },
+  title: {
+    fontSize: "clamp(24px, 5vw, 32px)",
+    fontWeight: "700",
+    color: "#1a1a1a",
+    margin: "0 0 10px 0",
+    background: "linear-gradient(135deg, #007bff 0%, #0056b3 100%)",
+    WebkitBackgroundClip: "text",
+    WebkitTextFillColor: "transparent",
+    backgroundClip: "text"
+  },
+  subtitle: {
+    fontSize: "clamp(12px, 3vw, 14px)",
+    color: "#666",
+    margin: "0"
+  },
+  content: {
+    animation: "fadeIn 0.3s ease-in"
+  }
+};
 
 export default function AdminPanel() {
   const [region, setRegion] = useState("");
   const [service, setService] = useState("");
   const [period, setPeriod] = useState("week");
+  const [analysisValues, setAnalysisValues] = useState(Array(7).fill(""));
+  const [analysisData, setAnalysisData] = useState([]);
+  const [analysisLoading, setAnalysisLoading] = useState(false);
 
-  const [weekValues, setWeekValues] = useState(Array(7).fill(""));
-  const [monthValues, setMonthValues] = useState(Array(12).fill(""));
-  const [yearValues, setYearValues] = useState(Array(7).fill(""));
-  const [futureValues, setFutureValues] = useState(Array(7).fill(""));
+  const [priceYearMonth, setPriceYearMonth] = useState(() => {
+    const now = new Date();
+    return now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0');
+  });
+  const [pricesData, setPricesData] = useState({
+    "Gaze naturale": "",
+    "Energie electrica": "",
+    "Energie termica": "",
+    "Apa si canalizare": ""
+  });
+  const [allPrices, setAllPrices] = useState([]);
+  const [pricesLoading, setPricesLoading] = useState(false);
 
-  const [data, setData] = useState([]);
+  const [activeTab, setActiveTab] = useState("analysis");
 
   const API_URL = "http://localhost:5000/api/analysis";
+  const PRICES_API_URL = "http://localhost:5000/api/prices";
 
-  const fetchData = async () => {
+  const fetchAnalysisData = async () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.get(API_URL, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setData(res.data);
+      setAnalysisData(res.data);
     } catch (err) {
       console.error(err);
+      alert("Ошибка при загрузке данных анализа");
+    }
+  };
+
+  const fetchPricesData = async () => {
+    try {
+      const res = await axios.get(PRICES_API_URL);
+      setAllPrices(res.data);
+    } catch (err) {
+      console.error(err);
+      alert("Ошибка при загрузке цен");
     }
   };
 
   useEffect(() => {
-    fetchData();
+    fetchAnalysisData();
+    fetchPricesData();
   }, []);
 
-  const handleSubmit = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      let finalValues;
+  const handleAnalysisSubmit = async () => {
+    if (!region.trim() || !service.trim()) {
+      alert("Заполните регион и сервис");
+      return;
+    }
 
-      if (period === "week") {
-        finalValues = weekValues.map(v => Number(v) || 0);
-      } else if (period === "month") {
-        finalValues = monthValues.map(v => Number(v) || 0);
-      } else if (period === "year") {
-        finalValues = yearValues.map(v => Number(v) || 0);
-      } else if (period === "future") {
-        finalValues = futureValues.map(v => Number(v) || 0);
-      }
+    try {
+      setAnalysisLoading(true);
+      const token = localStorage.getItem("token");
+      const finalValues = analysisValues.map(v => Number(v) || 0);
 
       await axios.post(API_URL, {
         region,
@@ -56,147 +116,147 @@ export default function AdminPanel() {
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      // сброс
       setRegion("");
       setService("");
       setPeriod("week");
-      setWeekValues(Array(7).fill(""));
-      setMonthValues(Array(12).fill(""));
-      setYearValues(Array(7).fill(""));
-      setFutureValues(Array(7).fill(""));
-      fetchData();
+      setAnalysisValues(Array(7).fill(""));
+      await fetchAnalysisData();
+      alert("Данные добавлены успешно");
     } catch (err) {
       console.error(err);
       alert("Ошибка при добавлении данных");
+    } finally {
+      setAnalysisLoading(false);
     }
   };
 
-  const handleDelete = async (id) => {
+  const handlePricesSubmit = async () => {
+    try {
+      setPricesLoading(true);
+      const token = localStorage.getItem("token");
+      const prices = [];
+
+      for (const [service, price] of Object.entries(pricesData)) {
+        if (price) {
+          prices.push({ service, price: parseFloat(price) });
+        }
+      }
+
+      if (prices.length === 0) {
+        alert("Введите хотя бы одну цену");
+        setPricesLoading(false);
+        return;
+      }
+
+      await axios.post(PRICES_API_URL, {
+        yearMonth: priceYearMonth,
+        prices
+      }, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      setPricesData({
+        "Gaze naturale": "",
+        "Energie electrica": "",
+        "Energie termica": "",
+        "Apa si canalizare": ""
+      });
+      await fetchPricesData();
+      alert("Цены добавлены успешно");
+    } catch (err) {
+      console.error(err);
+      alert("Ошибка при добавлении цен");
+    } finally {
+      setPricesLoading(false);
+    }
+  };
+
+  const handleDeleteAnalysis = async (id) => {
+    if (!confirm("Вы уверены?")) return;
+
     try {
       const token = localStorage.getItem("token");
       await axios.delete(`${API_URL}/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      fetchData();
+      await fetchAnalysisData();
+      alert("✓ Данные удалены");
     } catch (err) {
       console.error(err);
-      alert("Ошибка при удалении данных");
+      alert("✗ Ошибка при удалении");
     }
   };
 
+  const handlePeriodChange = (newPeriod) => {
+    setPeriod(newPeriod);
+    const lengths = { week: 7, month: 12, year: 7, future: 7 };
+    setAnalysisValues(Array(lengths[newPeriod]).fill(""));
+  };
+
+  const tabs = [
+    { id: "analysis", label: "Управление данными анализа" },
+    { id: "prices", label: "Управление ценами" }
+  ];
+
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Админка: управление данными</h2>
-      <div>
-        <input placeholder="Регион" value={region} onChange={e => setRegion(e.target.value)} />
-        <input placeholder="Сервис" value={service} onChange={e => setService(e.target.value)} />
-        <select value={period} onChange={e => setPeriod(e.target.value)}>
-          <option value="week">Неделя</option>
-          <option value="month">Месяц</option>
-          <option value="year">Год</option>
-          <option value="future">Прогноз</option>
-        </select>
+    <div style={globalStyles.body}>
+      <style>{`
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
+      `}</style>
 
-        {period === "week" && (
-          <div style={{ display: "flex", gap: "5px", marginTop: "10px" }}>
-            {["Пн","Вт","Ср","Чт","Пт","Сб","Вс"].map((day, idx) => (
-              <input
-                key={idx}
-                placeholder={day}
-                value={weekValues[idx]}
-                onChange={e => {
-                  const newValues = [...weekValues];
-                  newValues[idx] = e.target.value;
-                  setWeekValues(newValues);
-                }}
-                style={{ width: "60px" }}
+      <div style={globalStyles.container}>
+        <div style={globalStyles.header}>
+          <h1 style={globalStyles.title}>Админ-панель</h1>
+          <p style={globalStyles.subtitle}>Управление данными анализа и ценами</p>
+        </div>
+
+        <Tabs
+          activeTab={activeTab}
+          setActiveTab={setActiveTab}
+          tabs={tabs}
+        />
+
+        <div style={globalStyles.content}>
+          {activeTab === "analysis" && (
+            <div>
+              <AnalysisForm
+                region={region}
+                setRegion={setRegion}
+                service={service}
+                setService={setService}
+                period={period}
+                setPeriod={handlePeriodChange}
+                values={analysisValues}
+                setValues={setAnalysisValues}
+                onSubmit={handleAnalysisSubmit}
+                loading={analysisLoading}
               />
-            ))}
-          </div>
-        )}
-
-        {period === "month" && (
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "5px", marginTop: "10px" }}>
-            {["Янв","Фев","Мар","Апр","Май","Июн","Июл","Авг","Сен","Окт","Ноя","Дек"].map((m, idx) => (
-              <input
-                key={idx}
-                placeholder={m}
-                value={monthValues[idx]}
-                onChange={e => {
-                  const newValues = [...monthValues];
-                  newValues[idx] = e.target.value;
-                  setMonthValues(newValues);
-                }}
-                style={{ width: "60px" }}
+              <AnalysisTable
+                data={analysisData}
+                onDelete={handleDeleteAnalysis}
+                loading={analysisLoading}
               />
-            ))}
-          </div>
-        )}
+            </div>
+          )}
 
-        {period === "year" && (
-          <div style={{ display: "flex", gap: "5px", marginTop: "10px" }}>
-            {["2021","2022","2023","2024","2025","2026","2027"].map((y, idx) => (
-              <input
-                key={idx}
-                placeholder={y}
-                value={yearValues[idx]}
-                onChange={e => {
-                  const newValues = [...yearValues];
-                  newValues[idx] = e.target.value;
-                  setYearValues(newValues);
-                }}
-                style={{ width: "70px" }}
+          {activeTab === "prices" && (
+            <div>
+              <PricesForm
+                yearMonth={priceYearMonth}
+                setYearMonth={setPriceYearMonth}
+                pricesData={pricesData}
+                setPricesData={setPricesData}
+                onSubmit={handlePricesSubmit}
+                loading={pricesLoading}
               />
-            ))}
-          </div>
-        )}
-
-        {period === "future" && (
-          <div style={{ display: "flex", gap: "5px", marginTop: "10px" }}>
-            {["2028","2029","2030","2031","2032","2033","2034"].map((y, idx) => (
-              <input
-                key={idx}
-                placeholder={y}
-                value={futureValues[idx]}
-                onChange={e => {
-                  const newValues = [...futureValues];
-                  newValues[idx] = e.target.value;
-                  setFutureValues(newValues);
-                }}
-                style={{ width: "70px" }}
-              />
-            ))}
-          </div>
-        )}
-
-        <button onClick={handleSubmit}>Добавить</button>
+              <PricesTable data={allPrices} />
+            </div>
+          )}
+        </div>
       </div>
-
-      <h3>Все данные</h3>
-      <table border="1" style={{ marginTop: "20px", width: "100%" }}>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Регион</th>
-            <th>Сервис</th>
-            <th>Период</th>
-            <th>Значения</th>
-            <th>Удалить</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map(d => (
-            <tr key={d.id}>
-              <td>{d.id}</td>
-              <td>{d.region}</td>
-              <td>{d.service}</td>
-              <td>{d.period}</td>
-              <td>{d.values.join(", ")}</td>
-              <td><button onClick={() => handleDelete(d.id)}>Удалить</button></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
     </div>
   );
 }

@@ -3,19 +3,21 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 20px;
-    padding: 10px;
+    margin: clamp(12px, 3vw, 20px);
+    padding: clamp(8px, 2vw, 10px);
+    box-sizing: border-box;
 }
 
 .styled-button {
     background-color: #007bff;
-    color: black;
+    color: white;
     border: none;
-    padding: 8px 16px;
+    padding: clamp(6px, 1.5vw, 8px) clamp(12px, 2vw, 16px);
     border-radius: 4px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: clamp(12px, 2.5vw, 14px);
     transition: background-color 0.3s ease;
+    white-space: nowrap;
 }
 
 .styled-button:hover {
@@ -25,11 +27,12 @@
 .MuiSelect-root {
     background-color: #fff;
     border-radius: 50px;
-    padding: 8px;
-    height: 60px;
-    width: 360px;
+    padding: clamp(6px, 1.5vw, 8px);
+    height: clamp(44px, 8vw, 60px);
+    width: clamp(200px, 90vw, 360px);
     text-align: center;
     border: none;
+    font-size: clamp(12px, 2.5vw, 14px);
 }
 
 .MuiPaper-root {
@@ -38,7 +41,8 @@
 }
 
 .MuiMenuItem-root {
-    padding: 8px 16px;
+    padding: clamp(6px, 1.5vw, 8px) clamp(12px, 2vw, 16px);
+    font-size: clamp(11px, 2.5vw, 14px);
 }
 
 .popup {
@@ -46,7 +50,7 @@
     border: 1px solid #ccc;
     border-radius: 50px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 8px;
+    padding: clamp(6px, 1.5vw, 8px);
 }
 
 .animated-listbox {
@@ -56,7 +60,8 @@
     border: 1px solid #ccc;
     border-radius: 4px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    padding: 8px;
+    padding: clamp(6px, 1.5vw, 8px);
+    max-width: clamp(200px, 90vw, 360px);
 }
 
 .placement-bottom {
@@ -65,4 +70,67 @@
 
 .placement-top {
     bottom: 100%;
+}
+
+@media screen and (max-width: 1024px) {
+    .dropdown-container {
+        margin: clamp(10px, 2.5vw, 18px);
+        padding: clamp(6px, 1.5vw, 8px);
+    }
+
+    .styled-button {
+        padding: clamp(5px, 1.2vw, 7px) clamp(10px, 1.8vw, 14px);
+        font-size: clamp(11px, 2.3vw, 13px);
+    }
+
+    .MuiSelect-root {
+        width: clamp(180px, 85vw, 340px);
+        height: clamp(42px, 7vw, 55px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .dropdown-container {
+        width: auto;
+        margin: clamp(8px, 2vw, 15px);
+        padding: clamp(5px, 1.2vw, 8px);
+    }
+
+    .styled-button {
+        padding: clamp(5px, 1vw, 6px) clamp(10px, 1.5vw, 12px);
+        font-size: clamp(10px, 2vw, 12px);
+    }
+
+    .MuiSelect-root {
+        width: clamp(160px, 88vw, 320px);
+        height: clamp(40px, 6vw, 50px);
+        font-size: clamp(11px, 2.2vw, 12px);
+    }
+
+    .MuiMenuItem-root {
+        padding: clamp(5px, 1vw, 6px) clamp(10px, 1.5vw, 14px);
+        font-size: clamp(10px, 2vw, 12px);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .dropdown-container {
+        margin: clamp(6px, 1.5vw, 10px);
+        padding: clamp(4px, 1vw, 6px);
+    }
+
+    .styled-button {
+        padding: clamp(4px, 0.8vw, 5px) clamp(8px, 1.2vw, 10px);
+        font-size: clamp(9px, 1.5vw, 10px);
+    }
+
+    .MuiSelect-root {
+        width: clamp(140px, 90vw, 280px);
+        height: clamp(36px, 5vw, 44px);
+        font-size: clamp(10px, 2vw, 11px);
+    }
+
+    .animated-listbox {
+        max-width: clamp(140px, 90vw, 280px);
+    }
 }

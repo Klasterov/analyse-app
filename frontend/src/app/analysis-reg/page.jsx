@@ -7,7 +7,6 @@ import "./analys.css";
 import DropDownreg from "./components/dropdownreg";
 import DropDownser from "./components/dropdownser";
 
-// Метки для всех периодов
 const weekLabels = ["Lu", "Ma", "Mi", "Jo", "Vi", "Sa", "Du"];
 const monthLabels = ["Ian", "Feb", "Mar", "Apr", "Mai", "Iun", "Iul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const yearLabels = ["2021", "2022", "2023", "2024", "2025", "2026", "2027"];
@@ -24,18 +23,20 @@ export default function AnalysisReg() {
   const fetchData = async () => {
     if (selectedRegion !== "none" && selectedService !== "none") {
       try {
+        const latestRes = await axios.get(
+          `http://localhost:5000/api/prices/current`
+        );
+
         const res = await axios.get(
           `http://localhost:5000/api/analysis/${selectedRegion}/${selectedService}`
         );
         const dbData = res.data;
 
-        // Берём данные по каждому периоду
-        const weekData = dbData.find(d => d.period === "week")?.values || [];
         const monthData = dbData.find(d => d.period === "month")?.values || [];
+        const weekData = dbData.find(d => d.period === "week")?.values || [];
         const yearData = dbData.find(d => d.period === "year")?.values || [];
         const futureData = dbData.find(d => d.period === "future")?.values || [];
 
-        // Синхронизация: обрезаем/дополняем массивы до нужной длины
         const normalize = (arr, length) => {
           const nums = arr.map(Number);
           if (nums.length < length) {
@@ -44,21 +45,21 @@ export default function AnalysisReg() {
           return nums.slice(0, length);
         };
 
-        const weekFinal = normalize(weekData, weekLabels.length);
         const monthFinal = normalize(monthData, monthLabels.length);
+        const weekFinal = normalize(weekData, weekLabels.length);
         const yearFinal = normalize(yearData, yearLabels.length);
         const futureFinal = normalize(futureData, forecastLabels.length);
 
         setChartData(
           activeButton === "week" ? weekFinal :
-          activeButton === "month" ? monthFinal :
-          yearFinal
+            activeButton === "month" ? monthFinal :
+              yearFinal
         );
         setForecastData(futureFinal);
         setXLabels(
           activeButton === "week" ? weekLabels :
-          activeButton === "month" ? monthLabels :
-          yearLabels
+            activeButton === "month" ? monthLabels :
+              yearLabels
         );
       } catch (err) {
         console.error("Ошибка загрузки данных:", err);
@@ -74,7 +75,6 @@ export default function AnalysisReg() {
     fetchData();
   }, [selectedRegion, selectedService, activeButton]);
 
-  // Автообновление при изменении данных в админке
   useEffect(() => {
     const handler = () => {
       if (selectedRegion !== "none" && selectedService !== "none") {

@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Container } from "react-bootstrap";
 import api from "../../../api";
+import sessionUtils from "../../../utils/sessionUtils";
 import "./login.css";
 
 export default function Login() {
@@ -11,6 +12,7 @@ export default function Login() {
   const [name, setName] = useState("");
   const [isRegistering, setIsRegistering] = useState(false);
   const [messages, setMessages] = useState([]);
+  const [rememberMe, setRememberMe] = useState(false);
   const router = useRouter();
 
   const handleSubmit = async () => {
@@ -27,12 +29,19 @@ export default function Login() {
         await api.post("/api/auth/register", { name, email, password });
         newMessages.push("Регистрация успешна! Теперь можно войти.");
         setIsRegistering(false);
+        setEmail("");
+        setPassword("");
+        setName("");
       } else {
         const res = await api.post("/api/auth/login", { email, password });
         newMessages.push("Вход успешен!");
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
-        router.push("/dashboard");
+        
+        sessionUtils.saveSession(res.data.token, email, res.data.user, rememberMe);
+        
+        setMessages(newMessages);
+        setTimeout(() => {
+          router.push("/dashboard");
+        }, 500);
       }
     } catch (err) {
       if (err.response) {
@@ -81,6 +90,28 @@ export default function Login() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        
+        {!isRegistering && (
+          <div style={{
+            display: "flex",
+            alignItems: "center",
+            marginTop: "15px",
+            marginBottom: "15px",
+            fontSize: "14px"
+          }}>
+            <input
+              type="checkbox"
+              id="rememberMe"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              style={{ marginRight: "8px", cursor: "pointer" }}
+            />
+            <label htmlFor="rememberMe" style={{ cursor: "pointer", margin: "0" }}>
+              Запомнить меня на этом устройстве
+            </label>
+          </div>
+        )}
+        
         <button onClick={handleSubmit}>
           {isRegistering ? "Зарегистрироваться" : "Войти"}
         </button>

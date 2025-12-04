@@ -6,27 +6,127 @@ import { MenuItem } from "@mui/material";
 import "./current.css";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-
-const rates = {
-    "Gaze naturale": 3.5,
-    "Energie electrica": 1.2,
-    "Energie termica": 4.8,
-    "Apa si canalizare": 2.5
-}
+import api from "../../api";
+import sessionUtils from "../../utils/sessionUtils";
 
 const TVA_RATE = 0.8;
 const SERVICE_FEE = 10;
 
+const serviceMapping = {
+    "Gaze naturale": "last_gaze_reading",
+    "Energie electrica": "last_electricity_reading",
+    "Energie termica": "last_heat_reading",
+    "Apa si canalizare": "last_water_reading"
+};
+
 export default function Current() {
+    const [rates, setRates] = React.useState({});
+    const [loading, setLoading] = React.useState(true);
     const [selectedService, setSelectedService] = React.useState("none");
     const [previousIndex, setPreviousIndex] = React.useState("");
     const [currentIndex, setCurrentIndex] = React.useState("");
     const [amountDue, setAmountDue] = React.useState(0);
     const [tva, setTva] = React.useState(0);
+    const [isAuthenticated, setIsAuthenticated] = React.useState(false);
+    const [lastReadingDate, setLastReadingDate] = React.useState(null);
+    const [showSaveOption, setShowSaveOption] = React.useState(false);
+
+    React.useEffect(() => {
+        const lastSeenRef = React.createRef();
+
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                const pricesResponse = await api.get('/api/prices/current');
+                setRates(pricesResponse.data);
+                const session = sessionUtils.getActiveSession();
+                console.log('Active session:', session);
+
+                if (session && session.token) {
+                    try {
+                        console.log('Fetching readings with token:', session.token.substring(0, 20) + '...');
+                        const readingsResponse = await api.get('/api/readings/last', {
+                            headers: { Authorization: `Bearer ${session.token}` }
+                        });
+
+                        console.log('Readings response:', readingsResponse.data);
+
+                        if (readingsResponse.data) {
+                            setIsAuthenticated(true);
+                            const readings = readingsResponse.data.readings || {};
+
+                            console.log('Readings data:', readings);
+                            if (readings['Gaze naturale']) {
+                                setPreviousIndex(readings['Gaze naturale']);
+                                console.log('Set previousIndex to:', readings['Gaze naturale']);
+                            }
+
+                            if (readingsResponse.data.lastReadingDate) {
+                                const formattedDate = new Date(readingsResponse.data.lastReadingDate).toLocaleDateString();
+                                setLastReadingDate(formattedDate);
+                                console.log('Set lastReadingDate to:', formattedDate);
+                            }
+
+                            setShowSaveOption(true);
+                            sessionUtils.updateSessionTimestamp();
+                            const now = Date.now().toString();
+                            localStorage.setItem('lastReadingsUpdated', now);
+                            lastSeenRef.current = now;
+                        }
+                    } catch (readingsErr) {
+                        console.error('Error fetching readings:', readingsErr);
+                        if (readingsErr.response) {
+                            console.error('Response status:', readingsErr.response.status);
+                            console.error('Response data:', readingsErr.response.data);
+                        }
+                    }
+                } else {
+                    console.log('No active session found');
+                }
+            } catch (err) {
+                console.error('Ошибка при получении данных:', err);
+                setRates({
+                    "Gaze naturale": 3.5,
+                    "Energie electrica": 1.2,
+                    "Energie termica": 4.8,
+                    "Apa si canalizare": 2.5
+                });
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+        const handleStorage = (e) => {
+            if (e.key === 'lastReadingsUpdated') {
+                console.log('Detected readings update via storage event:', e.newValue);
+                if (!lastSeenRef.current || lastSeenRef.current !== e.newValue) {
+                    lastSeenRef.current = e.newValue;
+                    fetchData();
+                }
+            }
+        };
+
+        window.addEventListener('storage', handleStorage);
+
+        const pollInterval = setInterval(() => {
+            const marker = localStorage.getItem('lastReadingsUpdated');
+            if (marker && marker !== lastSeenRef.current) {
+                console.log('Detected readings update via polling:', marker);
+                lastSeenRef.current = marker;
+                fetchData();
+            }
+        }, 15000);
+
+        return () => {
+            window.removeEventListener('storage', handleStorage);
+            clearInterval(pollInterval);
+        };
+    }, []);
 
     const handleCalculation = () => {
         if (selectedService !== "none" && previousIndex && currentIndex) {
-            const consumption = Math.max(0, currentIndex - previousIndex); // Evită valori negative
+            const consumption = Math.max(0, currentIndex - previousIndex);
             const total = consumption * rates[selectedService];
             const tva = total * TVA_RATE;
             const finalTotal = total + tva + SERVICE_FEE;
@@ -35,8 +135,60 @@ export default function Current() {
         }
     };
 
+    const handleSaveReadings = async () => {
+        try {
+            const session = sessionUtils.getActiveSession();
+            if (!session) {
+                alert("Пожалуйста, авторизуйтесь для сохранения показаний");
+                return;
+            }
+
+            const readings = {
+                'Gaze naturale': previousIndex ? Number(previousIndex) : null,
+                'Energie electrica': selectedService === 'Energie electrica' ? Number(currentIndex) : null,
+                'Energie termica': selectedService === 'Energie termica' ? Number(currentIndex) : null,
+                'Apa si canalizare': selectedService === 'Apa si canalizare' ? Number(currentIndex) : null,
+            };
+
+            await api.post(
+                '/api/readings/save',
+                { readings },
+                { headers: { Authorization: `Bearer ${session.token}` } }
+            );
+
+            alert("Показания сохранены! При следующем входе они загрузятся автоматически");
+            const now = new Date().toLocaleDateString();
+            setLastReadingDate(now);
+            sessionUtils.updateSessionTimestamp();
+            try {
+                const marker = Date.now().toString();
+                localStorage.setItem('lastReadingsUpdated', marker);
+                console.log('Wrote lastReadingsUpdated marker:', marker);
+            } catch (e) {
+                console.warn('Could not write lastReadingsUpdated to localStorage', e);
+            }
+        } catch (err) {
+            console.error('Ошибка при сохранении показаний:', err);
+            alert("✗ Ошибка при сохранении показаний");
+        }
+    };
+
     return (
         <Container className="payment-container">
+            {isAuthenticated && lastReadingDate && (
+                <div style={{
+                    backgroundColor: "#e8f5e9",
+                    padding: "12px 16px",
+                    borderRadius: "8px",
+                    marginBottom: "20px",
+                    fontSize: "14px",
+                    color: "#2e7d32",
+                    textAlign: "center"
+                }}>
+                    Последние показания были сохранены: <strong>{lastReadingDate}</strong>
+                </div>
+            )}
+            
             <Row>
                 <Col md={6}>
                     <div className="payment-block">
@@ -49,22 +201,53 @@ export default function Current() {
                         </Select>
                         <div className="input-block">
                             <label>Indexul precedent:</label>
-                            <input className="payment-input" type="number" value={previousIndex} onChange={(e) => setPreviousIndex(Number(e.target.value))} />
+                            <input 
+                                className="payment-input" 
+                                type="number" 
+                                value={previousIndex} 
+                                onChange={(e) => setPreviousIndex(Number(e.target.value))}
+                                placeholder="Автоматически заполнено" 
+                            />
                         </div>
                         <div className="input-block">
                             <label>Indexul curent:</label>
-                            <input className="payment-input" type="number" value={currentIndex} onChange={(e) => setCurrentIndex(Number(e.target.value))} />
+                            <input 
+                                className="payment-input" 
+                                type="number" 
+                                value={currentIndex} 
+                                onChange={(e) => setCurrentIndex(Number(e.target.value))}
+                                placeholder="Введите текущие показания" 
+                            />
                         </div>
                     </div>
                 </Col>
                 <Col md={6}>
                     <div className="checkout">
-                        <p>Pret unitate pentru {selectedService}: <span>{rates[selectedService]} lei</span></p>
+                        <p>Pret unitate pentru {selectedService}: <span>{rates[selectedService] ? rates[selectedService] : '-'} lei</span></p>
                         <p>TVA: <span>{tva}</span></p>
                         <p>Deservirea thenica <span>{SERVICE_FEE}</span></p>
                         <h3>Total de achitat:
                              <span>{amountDue} lei</span></h3>
                         <button onClick={handleCalculation}>Calculează suma</button>
+                        {isAuthenticated && currentIndex && (
+                            <button 
+                                onClick={handleSaveReadings}
+                                style={{
+                                    marginTop: "10px",
+                                    backgroundColor: "#4caf50",
+                                    width: "100%",
+                                    padding: "10px",
+                                    color: "white",
+                                    border: "none",
+                                    borderRadius: "30px",
+                                    cursor: "pointer",
+                                    fontSize: "14px",
+                                    fontWeight: "500"
+                                }}
+                            >
+                                Salvează indexuri pentru următoarea dată
+                            </button>
+                        )}
                     </div>
                 </Col>
             </Row>

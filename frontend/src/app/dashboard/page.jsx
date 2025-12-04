@@ -28,7 +28,6 @@ export default function Dashboard() {
   const [serviceData, setServiceData] = useState({});
   const [currentValue, setCurrentValue] = useState("");
 
-  // Загружаем данные из базы при монтировании
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -42,7 +41,6 @@ export default function Dashboard() {
           headers: { Authorization: `Bearer ${token}` }
         });
 
-        // Преобразуем данные из базы в формат serviceData
         const grouped = {};
         res.data.forEach(reading => {
           if (!grouped[selectedService]) {
@@ -91,7 +89,6 @@ export default function Dashboard() {
     setServiceData(updatedServiceData);
     setCurrentValue("");
 
-    // 👉 Отправляем на сервер
     try {
       const token = localStorage.getItem("token");
       await axios.post(`${API_URL}/add`, {
@@ -101,6 +98,13 @@ export default function Dashboard() {
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      try {
+        const marker = Date.now().toString();
+        localStorage.setItem('lastReadingsUpdated', marker);
+        console.log('Wrote lastReadingsUpdated marker from Dashboard:', marker);
+      } catch (e) {
+        console.warn('Could not write lastReadingsUpdated to localStorage', e);
+      }
     } catch (error) {
       console.error("Ошибка при сохранении на сервер:", error);
     }

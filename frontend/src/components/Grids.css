@@ -1,67 +1,135 @@
 .grid-container {
-    margin-top: 50px;
+    margin-top: clamp(30px, 5vw, 50px);
 }
 
 .text-content{
     display: flex;
-    
     flex-direction: column;
-    margin-left: 25%;
-    margin-top: 15%;
-    width: 550px;
+    margin-left: clamp(0%, 10vw, 25%);
+    margin-top: clamp(5%, 8vw, 15%);
+    width: clamp(90vw, 100%, 550px);
+    padding: clamp(10px, 3vw, 20px);
+    box-sizing: border-box;
 }
 
 h2{
-    font-size: 50px;
+    font-size: clamp(28px, 6vw, 50px);
     font-weight: bold;
     color: white;
-    width: 500px;
-    margin-bottom: 15px;
+    width: 100%;
+    max-width: 550px;
+    margin-bottom: clamp(10px, 2vw, 15px);
+    line-height: 1.2;
 }
 
 p{
-    font-size: 18px;
+    font-size: clamp(14px, 3.5vw, 18px);
     font-weight: lighter;
     color: #8794BA;
+    margin: clamp(8px, 2vw, 15px) 0;
 }
 
 p:last-child{
     color: white;
     text-align: center;
-    width: 450px;
-    font-size: 24px;
+    width: 100%;
+    max-width: 450px;
+    font-size: clamp(18px, 4vw, 24px);
+    margin: clamp(15px, 3vw, 25px) auto;
 }
 
 .image-content{
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
-    margin-top: 50px;
+    margin-top: clamp(30px, 5vw, 50px);
     z-index: 1;
+    gap: clamp(10px, 2vw, 20px);
+    padding: clamp(10px, 3vw, 20px);
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 1024px) {
     .text-content{
-        margin-left: 0%;
-        margin-top: 0%;
+        margin-left: clamp(0%, 5vw, 15%);
+        margin-top: clamp(3%, 5vw, 10%);
+        width: clamp(85vw, 95%, 500px);
+    }
+
+    h2{
+        font-size: clamp(24px, 5.5vw, 42px);
         width: 100%;
     }
-    h2{
-        font-size: 30px;
-        text-align: center;
-        width: auto;
-    }
+
     p{
-        font-size: 15px;
-        width: auto;
+        font-size: clamp(13px, 3.2vw, 16px);
     }
+
     p:last-child{
-        font-size: 20px;
-        width: 90%;
-        margin-left: 5%;
+        font-size: clamp(16px, 3.8vw, 22px);
+        width: 95%;
     }
+
     .image-content{
-        margin-top: 20px;
+        margin-top: clamp(25px, 4vw, 40px);
     }
-    
+}
+
+@media screen and (max-width: 768px) {
+    .text-content{
+        margin-left: 0;
+        margin-top: 0;
+        width: 100%;
+        padding: clamp(12px, 3vw, 18px);
+    }
+
+    h2{
+        font-size: clamp(22px, 5vw, 36px);
+        text-align: center;
+        width: 100%;
+        margin: 0 0 clamp(10px, 2vw, 15px) 0;
+    }
+
+    p{
+        font-size: clamp(12px, 3vw, 15px);
+        width: 100%;
+        text-align: center;
+    }
+
+    p:last-child{
+        font-size: clamp(16px, 3.5vw, 20px);
+        width: 95%;
+        margin: clamp(12px, 2vw, 20px) auto;
+    }
+
+    .image-content{
+        margin-top: clamp(20px, 3vw, 30px);
+        padding: clamp(8px, 2vw, 15px);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .text-content{
+        padding: clamp(10px, 2.5vw, 15px);
+    }
+
+    h2{
+        font-size: clamp(18px, 4.5vw, 28px);
+        margin-bottom: clamp(8px, 1.5vw, 12px);
+    }
+
+    p{
+        font-size: clamp(11px, 2.5vw, 13px);
+        margin: clamp(6px, 1.5vw, 10px) 0;
+    }
+
+    p:last-child{
+        font-size: clamp(14px, 3vw, 18px);
+        width: 100%;
+        margin: clamp(10px, 2vw, 15px) auto;
+    }
+
+    .image-content{
+        margin-top: clamp(15px, 2.5vw, 20px);
+        padding: clamp(6px, 1.5vw, 10px);
+    }
 }

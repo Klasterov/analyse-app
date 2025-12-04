@@ -61,3 +61,15 @@ exports.getServices = async (req, res) => {
     res.status(500).json({ error: "Ошибка получения сервисов" });
   }
 };
+
+exports.getLatestMonthData = async (req, res) => {
+  const { region, service } = req.params;
+  try {
+    const data = await analysisService.getLatestMonthData(region, service);
+    res.json(data);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Ошибка при получении данных последнего месяца' });
+  }
+};
+
