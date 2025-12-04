@@ -1,0 +1,373 @@
+.admin-body {
+    background-color: transparent;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.admin-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: clamp(20px, 5vw, 40px);
+}
+
+.admin-header {
+    margin-bottom: clamp(25px, 5vw, 40px);
+}
+
+.admin-title {
+    font-size: clamp(26px, 5vw, 34px);
+    font-weight: 700;
+    color: #1e3c72;
+    margin: 0 0 12px 0;
+}
+
+.admin-subtitle {
+    font-size: clamp(13px, 3vw, 15px);
+    color: #666;
+    margin: 0;
+    font-weight: 500;
+}
+
+.admin-content {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.tabs-container {
+    display: flex;
+    gap: clamp(8px, 2vw, 16px);
+    margin-bottom: clamp(30px, 5vw, 40px);
+    border-bottom: 2px solid #e0e0e0;
+    flex-wrap: wrap;
+}
+
+.tab-button {
+    background: transparent;
+    border: none;
+    padding: clamp(12px, 2.5vw, 16px) clamp(16px, 3vw, 24px);
+    font-size: clamp(13px, 3vw, 15px);
+    font-weight: 600;
+    color: #666;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    border-bottom: 3px solid transparent;
+}
+
+.tab-button:hover {
+    color: #2a5298;
+}
+
+.tab-button.active {
+    color: #1e3c72;
+    border-bottom-color: #2a5298;
+}
+
+.form-group {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 12px;
+    padding: clamp(20px, 4vw, 30px);
+    margin-bottom: clamp(20px, 4vw, 30px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+.form-row {
+    display: flex;
+    gap: clamp(12px, 3vw, 20px);
+    flex-wrap: wrap;
+    margin-bottom: clamp(16px, 3vw, 20px);
+}
+
+.form-row:last-child {
+    margin-bottom: 0;
+}
+
+.form-field {
+    flex: 1;
+    min-width: clamp(180px, 100%, 300px);
+    display: flex;
+    flex-direction: column;
+}
+
+.form-field label {
+    font-size: clamp(12px, 2.5vw, 14px);
+    font-weight: 600;
+    color: #1e3c72;
+    margin-bottom: clamp(6px, 1.5vw, 10px);
+}
+
+.form-field input,
+.form-field select {
+    padding: clamp(8px, 2vw, 12px) clamp(12px, 2.5vw, 16px);
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: clamp(12px, 2.5vw, 14px);
+    transition: all 0.3s ease;
+    background-color: white;
+    color: #333;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+    outline: none;
+    border-color: #2a5298;
+    box-shadow: 0 0 8px rgba(42, 82, 152, 0.2);
+    background-color: #f8f9fa;
+}
+
+.form-field input::placeholder {
+    color: #999;
+}
+
+.values-input-group {
+    display: flex;
+    gap: clamp(8px, 2vw, 12px);
+    flex-wrap: wrap;
+}
+
+.values-input-group input {
+    flex: 1;
+    min-width: clamp(70px, 90%, 120px);
+}
+
+.btn {
+    padding: clamp(10px, 2vw, 14px) clamp(16px, 3vw, 24px);
+    border: none;
+    border-radius: 8px;
+    font-size: clamp(12px, 2.5vw, 14px);
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(42, 82, 152, 0.3);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(42, 82, 152, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    color: white;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+    font-size: clamp(11px, 2vw, 13px);
+    padding: clamp(6px, 1.5vw, 10px) clamp(10px, 2vw, 14px);
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(231, 76, 60, 0.4);
+}
+
+.btn-danger:active {
+    transform: translateY(0);
+}
+
+.table-container {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    margin-top: clamp(25px, 5vw, 35px);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table thead {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+}
+
+.table th {
+    padding: clamp(12px, 2vw, 16px);
+    text-align: left;
+    font-size: clamp(12px, 2.5vw, 14px);
+    font-weight: 600;
+    border-bottom: 2px solid #2a5298;
+}
+
+.table td {
+    padding: clamp(12px, 2vw, 16px);
+    border-bottom: 1px solid #e0e0e0;
+    font-size: clamp(12px, 2.5vw, 14px);
+    color: #333;
+}
+
+.table tbody tr:hover {
+    background-color: #f8f9fa;
+    transition: background-color 0.2s ease;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.empty-state {
+    text-align: center;
+    padding: clamp(40px, 8vw, 60px) clamp(20px, 4vw, 30px);
+    color: #999;
+    font-size: clamp(13px, 3vw, 15px);
+}
+
+.loading {
+    text-align: center;
+    padding: clamp(30px, 6vw, 50px);
+    color: #2a5298;
+    font-size: clamp(13px, 3vw, 15px);
+    font-weight: 600;
+}
+
+.success-message {
+    background: #d4edda;
+    border-left: 4px solid #28a745;
+    color: #155724;
+    padding: clamp(12px, 2vw, 16px);
+    border-radius: 4px;
+    margin-bottom: clamp(16px, 3vw, 20px);
+    font-size: clamp(12px, 2.5vw, 14px);
+}
+
+.error-message {
+    background: #f8d7da;
+    border-left: 4px solid #e74c3c;
+    color: #721c24;
+    padding: clamp(12px, 2vw, 16px);
+    border-radius: 4px;
+    margin-bottom: clamp(16px, 3vw, 20px);
+    font-size: clamp(12px, 2.5vw, 14px);
+}
+
+@media screen and (max-width: 1024px) {
+    .admin-container {
+        padding: clamp(16px, 4vw, 28px);
+    }
+
+    .form-row {
+        flex-direction: column;
+    }
+
+    .form-field {
+        min-width: 100%;
+    }
+
+    .table {
+        font-size: clamp(11px, 2vw, 12px);
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .admin-container {
+        padding: clamp(12px, 3vw, 20px);
+    }
+
+    .tabs-container {
+        gap: clamp(4px, 1vw, 10px);
+    }
+
+    .tab-button {
+        padding: clamp(10px, 2vw, 14px) clamp(12px, 2.5vw, 18px);
+        font-size: clamp(12px, 2.5vw, 13px);
+    }
+
+    .form-group {
+        padding: clamp(16px, 3vw, 24px);
+        margin-bottom: clamp(16px, 3vw, 24px);
+    }
+
+    .form-row {
+        gap: clamp(8px, 2vw, 12px);
+    }
+
+    .values-input-group input {
+        min-width: clamp(50px, 80%, 100px);
+    }
+
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .table th,
+    .table td {
+        padding: clamp(8px, 1.5vw, 12px);
+        font-size: clamp(11px, 2vw, 12px);
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .admin-container {
+        padding: clamp(10px, 2.5vw, 16px);
+    }
+
+    .admin-title {
+        font-size: clamp(20px, 4vw, 26px);
+        margin-bottom: 8px;
+    }
+
+    .admin-subtitle {
+        font-size: clamp(12px, 2vw, 13px);
+    }
+
+    .tabs-container {
+        gap: clamp(2px, 0.5vw, 6px);
+        margin-bottom: clamp(20px, 4vw, 30px);
+    }
+
+    .tab-button {
+        padding: clamp(8px, 1.5vw, 12px) clamp(10px, 2vw, 14px);
+        font-size: clamp(11px, 2vw, 12px);
+    }
+
+    .form-group {
+        padding: clamp(12px, 2.5vw, 18px);
+    }
+
+    .form-field input,
+    .form-field select {
+        font-size: clamp(11px, 2vw, 12px);
+        padding: clamp(6px, 1.5vw, 10px) clamp(10px, 2vw, 12px);
+    }
+
+    .values-input-group input {
+        min-width: clamp(40px, 70%, 80px);
+    }
+
+    .btn {
+        padding: clamp(8px, 1.5vw, 12px) clamp(12px, 2vw, 16px);
+        font-size: clamp(11px, 2vw, 12px);
+    }
+
+    .table th,
+    .table td {
+        padding: clamp(6px, 1vw, 10px);
+        font-size: clamp(10px, 1.8vw, 11px);
+    }
+
+    .empty-state {
+        padding: clamp(30px, 6vw, 40px) clamp(15px, 3vw, 20px);
+    }
+}
