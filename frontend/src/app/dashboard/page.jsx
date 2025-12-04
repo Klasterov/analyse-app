@@ -2,13 +2,20 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Services from "./components/services";
+import LanguageSelector from "../../components/LanguageSelector";
 import { LineChart } from "@mui/x-charts";
+import { t, getLanguage } from "../../utils/i18n";
 import axios from "axios";
 import "./dashboard.css";
 
 export default function Dashboard() {
   const router = useRouter();
+  const [language, setLanguage] = useState('ro');
   const API_URL = "http://localhost:5000/api/meter-readings";
+
+  useEffect(() => {
+    setLanguage(getLanguage());
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -61,12 +68,12 @@ export default function Dashboard() {
 
   const handleAddValue = async () => {
     if (currentValue === "" || isNaN(currentValue)) {
-      alert("Introduceți o valoare validă!");
+      alert(t('errorMessage', language));
       return;
     }
 
     if (selectedService === "none") {
-      alert("Selectați un serviciu!");
+      alert(t('selectService', language));
       return;
     }
 
@@ -101,7 +108,6 @@ export default function Dashboard() {
       try {
         const marker = Date.now().toString();
         localStorage.setItem('lastReadingsUpdated', marker);
-        console.log('Wrote lastReadingsUpdated marker from Dashboard:', marker);
       } catch (e) {
         console.warn('Could not write lastReadingsUpdated to localStorage', e);
       }
@@ -123,6 +129,24 @@ export default function Dashboard() {
 
   return (
     <div className="dashboard-container">
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 'clamp(20px, 4vw, 30px)',
+        flexWrap: 'wrap',
+        gap: 'clamp(10px, 2vw, 20px)',
+      }}>
+        <h1 style={{
+          fontSize: 'clamp(24px, 5vw, 32px)',
+          color: '#1e3c72',
+          margin: 0,
+        }}>
+          {t('dashboard', language)}
+        </h1>
+        <LanguageSelector />
+      </div>
+
       <Services selectedService={selectedService} setSelectedService={setSelectedService} />
 
       <div className="input-data" style={{ marginTop: "20px" }}>
@@ -130,16 +154,16 @@ export default function Dashboard() {
           type="number"
           value={currentValue}
           onChange={(e) => setCurrentValue(e.target.value)}
-          placeholder="Introduceți valoarea contorului"
+          placeholder={t('currentReading', language)}
         />
         <button onClick={handleAddValue} style={{ marginLeft: "10px" }}>
-          Adaugă
+          {t('addReading', language)}
         </button>
       </div>
 
       {monthlyUsage.length > 0 && (
         <div style={{ marginTop: "40px", textAlign: "center", color: "white" }}>
-          <h3>Graficul consumului lunar pentru {selectedService}:</h3>
+          <h3>{t('myReadings', language)}:</h3>
           <LineChart
             className="chart"
             xAxis={[{
@@ -159,7 +183,7 @@ export default function Dashboard() {
       )}
 
       <button onClick={handleLogout} style={{ marginTop: "20px" }} className="logout-button">
-        Delogare
+        {t('logout', language)}
       </button>
     </div>
   );

@@ -1,41 +1,79 @@
-.navbar{
+.navbar {
     display: flex;
-    justify-content: center;
-    height: clamp(40px, 10vw, 50px);
-    margin-top: clamp(15px, 3vw, 25px);
-    padding: 0 clamp(10px, 2vw, 20px);
+    align-items: center;
+    justify-content: space-between;
+    height: clamp(50px, 12vw, 70px);
+    padding: 0 clamp(15px, 3vw, 30px);
     box-sizing: border-box;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
-.navbar-brand{
-    font-size: clamp(18px, 4vw, 25px);
+.navbar-brand {
+    font-size: clamp(20px, 5vw, 28px);
+    font-weight: 700;
     text-transform: uppercase;
     color: white;
+    letter-spacing: 2px;
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
 
-.navbar-menu{
+.navbar-brand:hover {
+    opacity: 0.9;
+    transform: scale(1.02);
+}
+
+.navbar-menu {
     display: flex;
-    justify-content: space-around;
+    align-items: center;
+    justify-content: flex-end;
     width: 100%;
     max-width: 1200px;
-    gap: clamp(10px, 2vw, 20px);
+    gap: clamp(15px, 3vw, 30px);
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-.navbar-item{
+.navbar-item {
     list-style: none;
-    font-size: clamp(12px, 3vw, 16px);
+    font-size: clamp(13px, 2vw, 16px);
     color: white;
     white-space: nowrap;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    padding: clamp(6px, 1vw, 10px) clamp(10px, 2vw, 15px);
+    border-radius: 6px;
+    font-weight: 500;
+}
+
+.navbar-item:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.navbar-item:active {
+    transform: translateY(0);
 }
 
 .burger-menu {
     display: none;
-    font-size: clamp(1.2rem, 4vw, 1.5rem);
+    font-size: clamp(1.3rem, 5vw, 1.8rem);
     background: none;
     border: none;
     color: white;
     cursor: pointer;
     padding: clamp(8px, 2vw, 12px);
+    transition: all 0.3s ease;
+}
+
+.burger-menu:hover {
+    opacity: 0.8;
 }
 
 @media (max-width: 768px) {
@@ -43,45 +81,58 @@
         display: block;
     }
 
-    .navbar{
-        height: auto;
-        min-height: clamp(45px, 12vw, 60px);
-        padding: clamp(10px, 2.5vw, 15px);
+    .navbar {
+        justify-content: space-between;
     }
 
     .navbar-menu {
         display: none;
         flex-direction: column;
         gap: clamp(8px, 2vw, 12px);
-        background-color: rgba(100, 100, 100, 0.95);
-        padding: clamp(12px, 3vw, 20px);
-        border-radius: 5px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        padding: clamp(15px, 3vw, 20px);
+        border-radius: 8px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
         position: absolute;
-        top: clamp(50px, 12vw, 80px);
-        right: clamp(8px, 2vw, 15px);
-        min-width: clamp(150px, 80vw, 250px);
-        z-index: 1000;
+        top: clamp(55px, 14vw, 85px);
+        right: clamp(10px, 2vw, 20px);
+        min-width: clamp(160px, 85vw, 280px);
+        z-index: 999;
     }
 
     .navbar-menu.open {
         display: flex;
-        flex-direction: column;
+        animation: slideDown 0.3s ease;
     }
 
-    .navbar-item{
+    .navbar-item {
         font-size: clamp(13px, 3.5vw, 16px);
-        padding: clamp(8px, 2vw, 12px) 0;
+        padding: clamp(10px, 2.5vw, 15px);
     }
 }
 
 @media (max-width: 480px) {
-    .navbar-brand{
-        font-size: clamp(14px, 3.5vw, 18px);
+    .navbar {
+        padding: 0 clamp(10px, 2vw, 15px);
     }
 
-    .navbar-menu{
-        top: clamp(40px, 10vw, 60px);
-        right: clamp(5px, 1.5vw, 10px);
+    .navbar-brand {
+        font-size: clamp(16px, 4vw, 20px);
+        letter-spacing: 1px;
+    }
+
+    .navbar-menu {
+        right: clamp(8px, 1.5vw, 12px);
+    }
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

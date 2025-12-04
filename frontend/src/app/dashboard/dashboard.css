@@ -1,141 +1,192 @@
-.chart{
-    background-color: white;
-    border-radius: 50px;
+.chart {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    padding: clamp(20px, 4vw, 30px);
+    transition: all 0.3s ease;
+}
+
+.chart:hover {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
 }
 
 .chart-container {
     position: relative;
     width: 100%;
+    padding: clamp(15px, 3vw, 25px) 0;
 }
 
-.input-data{
+.input-data {
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: clamp(0px, 1vw, 0px);
+    gap: clamp(8px, 2vw, 12px);
     flex-wrap: wrap;
-    padding: clamp(10px, 2vw, 20px);
+    padding: clamp(20px, 4vw, 30px);
     box-sizing: border-box;
 }
 
-.input-data input{
+.input-data input {
     text-align: center;
-    width: clamp(200px, 90vw, 570px);
-    height: clamp(40px, 8vw, 50px);
-    margin-top: clamp(15px, 3vw, 20px);
-    margin-bottom: clamp(15px, 3vw, 20px);
-    background-color: white;
-    border: none;
-    font-size: clamp(12px, 3vw, 14px);
-    border-top-left-radius: 10px;
-    border-bottom-left-radius: 10px;
-    padding: clamp(6px, 1.5vw, 10px);
+    width: clamp(220px, 90vw, 450px);
+    height: clamp(44px, 10vw, 52px);
+    background: white;
+    border: 2px solid #e0e0e0;
+    font-size: clamp(13px, 3vw, 15px);
+    border-radius: 10px;
+    padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 16px);
     box-sizing: border-box;
+    transition: all 0.3s ease;
+    color: #333;
 }
 
-.input-data button{
-    font-size: clamp(12px, 3vw, 14px);
-    height: clamp(40px, 8vw, 50px);
+.input-data input:focus {
+    outline: none;
+    border-color: #2a5298;
+    box-shadow: 0 0 8px rgba(42, 82, 152, 0.2);
+    background-color: #f8f9fa;
+}
+
+.input-data input::placeholder {
+    color: #999;
+}
+
+.input-data button {
+    font-size: clamp(13px, 3vw, 15px);
+    height: clamp(44px, 10vw, 52px);
     border: none;
-    width: clamp(70px, 20vw, 100px);
-    background-color: white;
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
+    width: clamp(80px, 20vw, 120px);
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(42, 82, 152, 0.3);
 }
 
-.input-data button:hover{
-    background-color: #f0f0f0;
+.input-data button:hover {
+    background: linear-gradient(135deg, #163155 0%, #1f4678 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(42, 82, 152, 0.4);
 }
 
-.logout-button{
+.input-data button:active {
+    transform: translateY(0);
+}
+
+.logout-button {
     display: flex;
     justify-content: center;
     text-align: center;
-    background-color: red;
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
     color: white;
-    width: clamp(120px, 30vw, 150px);
+    width: clamp(130px, 30vw, 160px);
     border: none;
-    height: clamp(40px, 8vw, 50px);
+    height: clamp(44px, 10vw, 52px);
     align-items: center;
-    border-radius: 5px;
+    border-radius: 10px;
     margin-bottom: clamp(30px, 5vw, 50px);
-    margin-top: clamp(10px, 2vw, 20px);
+    margin-top: clamp(15px, 3vw, 25px);
     cursor: pointer;
-    font-size: clamp(12px, 3vw, 14px);
-    transition: background-color 0.2s;
+    font-size: clamp(13px, 3vw, 15px);
+    transition: all 0.3s ease;
+    font-weight: 600;
+    box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
 }
 
-.logout-button:hover{
-    background-color: darkred;
+.logout-button:hover {
+    background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+}
+
+.logout-button:active {
+    transform: translateY(0);
 }
 
 @media screen and (max-width: 1024px) {
-    .input-data input{
-        width: clamp(180px, 85vw, 500px);
+    .input-data input {
+        width: clamp(200px, 85vw, 400px);
     }
 
-    .input-data button{
-        width: clamp(65px, 18vw, 90px);
+    .input-data button {
+        width: clamp(75px, 18vw, 110px);
     }
 
-    .logout-button{
-        width: clamp(110px, 28vw, 140px);
+    .logout-button {
+        width: clamp(120px, 28vw, 150px);
     }
 }
 
 @media screen and (max-width: 768px) {
-    .input-data{
-        flex-direction: column;
-        gap: clamp(8px, 2vw, 12px);
+    .chart {
+        padding: clamp(16px, 3vw, 24px);
     }
 
-    .input-data input{
-        width: clamp(160px, 90vw, 95%);
-        height: clamp(36px, 7vw, 45px);
+    .chart-container {
+        padding: clamp(12px, 2.5vw, 20px) 0;
+    }
+
+    .input-data {
+        flex-wrap: wrap;
+        gap: clamp(6px, 1.5vw, 10px);
+        padding: clamp(16px, 3vw, 24px);
+    }
+
+    .input-data input {
+        width: clamp(180px, 90vw, 380px);
+        height: clamp(40px, 8vw, 48px);
         border-radius: 10px;
-        margin: clamp(10px, 2vw, 15px) 0;
+        margin: clamp(8px, 1.5vw, 12px) 0;
     }
 
-    .input-data button{
-        width: clamp(100px, 90vw, 100px);
-        height: clamp(36px, 7vw, 45px);
-        border-radius: 10px;
+    .input-data button {
+        width: clamp(70px, 18vw, 100px);
+        height: clamp(40px, 8vw, 48px);
+        font-size: clamp(12px, 2.5vw, 14px);
     }
 
-    .logout-button{
-        width: clamp(100px, 85vw, 120px);
-        height: clamp(36px, 7vw, 45px);
-        margin: clamp(15px, 3vw, 20px) auto 0 auto;
+    .logout-button {
+        width: clamp(110px, 85vw, 140px);
+        height: clamp(40px, 8vw, 48px);
+        font-size: clamp(12px, 2.5vw, 14px);
+        margin: clamp(12px, 2.5vw, 18px) auto 0 auto;
     }
 }
 
 @media screen and (max-width: 480px) {
-    .input-data{
-        padding: clamp(8px, 2vw, 12px);
+    .chart {
+        padding: clamp(12px, 2.5vw, 18px);
     }
 
-    .input-data input{
-        width: 100%;
-        max-width: 100%;
-        height: clamp(32px, 6vw, 40px);
-        font-size: clamp(11px, 2.5vw, 12px);
-        margin: clamp(8px, 1.5vw, 12px) 0;
+    .chart-container {
+        padding: clamp(10px, 2vw, 15px) 0;
     }
 
-    .input-data button{
-        width: 100%;
-        max-width: 100%;
-        height: clamp(32px, 6vw, 40px);
-        font-size: clamp(11px, 2.5vw, 12px);
+    .input-data {
+        padding: clamp(12px, 2.5vw, 18px);
+        gap: clamp(6px, 1.5vw, 10px);
     }
 
-    .logout-button{
+    .input-data input {
         width: 100%;
-        max-width: 100%;
-        height: clamp(32px, 6vw, 40px);
-        font-size: clamp(11px, 2.5vw, 12px);
-        margin: clamp(12px, 2vw, 15px) 0;
+        height: clamp(40px, 8vw, 44px);
+        font-size: clamp(12px, 2vw, 13px);
+        margin: clamp(6px, 1.5vw, 10px) 0;
+    }
+
+    .input-data button {
+        width: clamp(100%, 100%, 100%);
+        height: clamp(40px, 8vw, 44px);
+        font-size: clamp(12px, 2vw, 13px);
+    }
+
+    .logout-button {
+        width: 100%;
+        height: clamp(40px, 8vw, 44px);
+        font-size: clamp(12px, 2vw, 13px);
+        margin: clamp(10px, 2vw, 15px) 0;
     }
 }

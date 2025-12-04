@@ -1,139 +1,178 @@
 .analysis-reg h1 {
-    font-size: clamp(22px, 5vw, 32px);
+    font-size: clamp(24px, 5vw, 34px);
     margin-bottom: clamp(60px, 10vw, 120px);
     margin-top: clamp(80px, 15vw, 150px);
     text-align: center;
-    color: white;
-    font-weight: 400;
-    padding: 0 clamp(10px, 2vw, 20px);
+    color: #1e3c72;
+    font-weight: 700;
+    padding: 0 clamp(12px, 3vw, 24px);
     box-sizing: border-box;
 }
 
-.chart-container{
-    margin-bottom: clamp(15px, 3vw, 20px);
-}
-
-.chart{
-    margin-top: clamp(30px, 5vw, 55px);
-    background-color: white;
-    border-radius: 25px;
-    top: -60px;
-}
-
 .chart-container {
+    margin-bottom: clamp(20px, 4vw, 30px);
     position: relative;
     width: 100%;
-    height: clamp(250px, 60vw, 400px);
+    height: clamp(260px, 60vw, 420px);
+    padding: 0 clamp(12px, 3vw, 24px);
+    box-sizing: border-box;
+}
+
+.chart {
+    margin-top: clamp(30px, 5vw, 55px);
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border-radius: 16px;
+    padding: clamp(20px, 4vw, 30px);
+    box-sizing: border-box;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    transition: all 0.3s ease;
+    top: -20px;
+}
+
+.chart:hover {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
 }
 
 .chart-controls-inside {
     position: absolute;
-    top: clamp(5px, 1vw, 10px);
-    left: clamp(75%, 85%, 90%);
-    transform: translateX(-50%);
+    top: clamp(12px, 2vw, 20px);
+    right: clamp(15px, 3vw, 25px);
     display: flex;
-    gap: clamp(6px, 1.5vw, 10px);
+    gap: clamp(8px, 2vw, 14px);
     z-index: 10;
     flex-wrap: wrap;
 }
 
 .chart-controls-inside button {
-    background-color: transparent;
-    color: black;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+    color: white;
     border: none;
-    padding: clamp(4px, 1vw, 5px) clamp(8px, 2vw, 10px);
-    border-radius: 5px;
+    padding: clamp(6px, 1.5vw, 10px) clamp(10px, 2vw, 16px);
+    border-radius: 8px;
     cursor: pointer;
-    font-size: clamp(11px, 2.5vw, 14px);
-    opacity: 0.5;
-    transition: opacity 0.3s ease;
+    font-size: clamp(12px, 2.5vw, 14px);
+    font-weight: 600;
+    opacity: 0.6;
+    transition: all 0.3s ease;
     white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(42, 82, 152, 0.2);
+}
+
+.chart-controls-inside button:hover {
+    opacity: 0.9;
 }
 
 .chart-controls-inside button.active {
-    opacity: 2;
-    font-weight: 900;
+    opacity: 1;
+    box-shadow: 0 4px 12px rgba(42, 82, 152, 0.4);
+    transform: translateY(-2px);
 }
 
-.drop-down{
+.drop-down {
     display: flex;
     justify-content: space-around;
     margin-bottom: clamp(30px, 5vw, 50px);
     flex-wrap: wrap;
-    gap: clamp(10px, 2vw, 20px);
-    padding: 0 clamp(10px, 2vw, 20px);
+    gap: clamp(12px, 3vw, 24px);
+    padding: 0 clamp(12px, 3vw, 24px);
     box-sizing: border-box;
 }
 
 @media screen and (max-width: 1024px) {
     .analysis-reg h1 {
-        font-size: clamp(20px, 4.5vw, 28px);
+        font-size: clamp(22px, 4.5vw, 30px);
         margin-top: clamp(60px, 12vw, 100px);
         margin-bottom: clamp(50px, 8vw, 100px);
     }
 
     .chart-container {
-        height: clamp(240px, 55vw, 380px);
+        height: clamp(250px, 55vw, 400px);
+        padding: 0 clamp(10px, 2.5vw, 20px);
+    }
+
+    .chart {
+        padding: clamp(16px, 3vw, 24px);
     }
 
     .chart-controls-inside {
-        top: clamp(3px, 0.8vw, 8px);
-        left: clamp(70%, 85%, 88%);
+        gap: clamp(6px, 1.5vw, 12px);
+        top: clamp(10px, 1.5vw, 16px);
+        right: clamp(12px, 2vw, 20px);
+    }
+
+    .chart-controls-inside button {
+        padding: clamp(5px, 1.2vw, 8px) clamp(8px, 1.8vw, 14px);
+        font-size: clamp(11px, 2.2vw, 13px);
+    }
+
+    .drop-down {
+        gap: clamp(10px, 2vw, 18px);
+        padding: 0 clamp(10px, 2.5vw, 20px);
     }
 }
 
 @media screen and (max-width: 768px) {
     .analysis-reg h1 {
-        font-size: clamp(18px, 4vw, 24px);
+        font-size: clamp(20px, 4vw, 26px);
         margin-top: clamp(50px, 10vw, 80px);
         margin-bottom: clamp(40px, 7vw, 70px);
-        padding: 0 clamp(8px, 2vw, 15px);
+        padding: 0 clamp(10px, 2vw, 18px);
     }
 
     .chart-container {
-        height: clamp(220px, 50vw, 350px);
-        padding: 0 clamp(8px, 2vw, 15px);
-        box-sizing: border-box;
+        height: clamp(230px, 50vw, 360px);
+        padding: 0 clamp(10px, 2vw, 16px);
+    }
+
+    .chart {
+        padding: clamp(14px, 2.5vw, 20px);
     }
 
     .chart-controls-inside {
-        top: clamp(2px, 0.5vw, 5px);
-        left: clamp(65%, 80%, 85%);
-        gap: clamp(4px, 1vw, 8px);
+        top: clamp(8px, 1.2vw, 14px);
+        right: clamp(10px, 1.5vw, 16px);
+        gap: clamp(5px, 1.2vw, 10px);
     }
 
     .chart-controls-inside button {
-        font-size: clamp(10px, 2.2vw, 12px);
-        padding: clamp(3px, 0.8vw, 4px) clamp(6px, 1.5vw, 8px);
+        font-size: clamp(11px, 2vw, 12px);
+        padding: clamp(4px, 1vw, 6px) clamp(7px, 1.5vw, 10px);
     }
 
-    .drop-down{
-        gap: clamp(8px, 1.5vw, 15px);
-        padding: 0 clamp(8px, 2vw, 15px);
+    .drop-down {
+        gap: clamp(10px, 2vw, 16px);
+        padding: 0 clamp(10px, 2vw, 16px);
         margin-bottom: clamp(25px, 4vw, 40px);
     }
 }
 
 @media screen and (max-width: 480px) {
     .analysis-reg h1 {
-        font-size: clamp(16px, 3.5vw, 20px);
+        font-size: clamp(18px, 3.5vw, 22px);
         margin-top: clamp(40px, 8vw, 60px);
         margin-bottom: clamp(30px, 5vw, 50px);
     }
 
     .chart-container {
         height: clamp(200px, 80vw, 300px);
+        padding: 0 clamp(8px, 1.5vw, 12px);
+    }
+
+    .chart {
+        padding: clamp(12px, 2vw, 16px);
     }
 
     .chart-controls-inside {
-        left: clamp(60%, 75%, 80%);
-        flex-direction: column;
-        gap: clamp(3px, 1vw, 5px);
+        left: auto;
+        right: clamp(8px, 1.5vw, 12px);
+        flex-direction: row;
+        gap: clamp(4px, 1vw, 8px);
     }
 
-    .drop-down{
+    .drop-down {
         flex-direction: column;
         gap: clamp(10px, 2vw, 15px);
-        padding: 0 clamp(5px, 1.5vw, 10px);
+        padding: 0 clamp(8px, 1.5vw, 12px);
     }
 }

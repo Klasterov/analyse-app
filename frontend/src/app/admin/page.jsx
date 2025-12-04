@@ -6,41 +6,7 @@ import AnalysisForm from "./components/AnalysisForm";
 import AnalysisTable from "./components/AnalysisTable";
 import PricesForm from "./components/PricesForm";
 import PricesTable from "./components/PricesTable";
-
-const globalStyles = {
-  body: {
-    backgroundColor: "transparent",
-    fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-    margin: "0",
-    padding: "0"
-  },
-  container: {
-    maxWidth: "1200px",
-    margin: "0 auto",
-    padding: "clamp(15px, 4vw, 30px)"
-  },
-  header: {
-    marginBottom: "clamp(20px, 5vw, 30px)"
-  },
-  title: {
-    fontSize: "clamp(24px, 5vw, 32px)",
-    fontWeight: "700",
-    color: "#1a1a1a",
-    margin: "0 0 10px 0",
-    background: "linear-gradient(135deg, #007bff 0%, #0056b3 100%)",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
-    backgroundClip: "text"
-  },
-  subtitle: {
-    fontSize: "clamp(12px, 3vw, 14px)",
-    color: "#666",
-    margin: "0"
-  },
-  content: {
-    animation: "fadeIn 0.3s ease-in"
-  }
-};
+import "./admin.css";
 
 export default function AdminPanel() {
   const [region, setRegion] = useState("");
@@ -199,18 +165,11 @@ export default function AdminPanel() {
   ];
 
   return (
-    <div style={globalStyles.body}>
-      <style>{`
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-      `}</style>
-
-      <div style={globalStyles.container}>
-        <div style={globalStyles.header}>
-          <h1 style={globalStyles.title}>Админ-панель</h1>
-          <p style={globalStyles.subtitle}>Управление данными анализа и ценами</p>
+    <div className="admin-body">
+      <div className="admin-container">
+        <div className="admin-header">
+          <h1 className="admin-title">Админ-панель</h1>
+          <p className="admin-subtitle">Управление данными анализа и ценами</p>
         </div>
 
         <Tabs
@@ -219,7 +178,7 @@ export default function AdminPanel() {
           tabs={tabs}
         />
 
-        <div style={globalStyles.content}>
+        <div className="admin-content">
           {activeTab === "analysis" && (
             <div>
               <AnalysisForm

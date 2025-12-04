@@ -8,6 +8,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import api from "../../api";
 import sessionUtils from "../../utils/sessionUtils";
+import { t, getLanguage } from "../../utils/i18n";
 
 const TVA_RATE = 0.8;
 const SERVICE_FEE = 10;
@@ -31,6 +32,11 @@ export default function Current() {
     const [lastReadingDate, setLastReadingDate] = React.useState(null);
     const [lastReadings, setLastReadings] = React.useState({});
     const [showSaveOption, setShowSaveOption] = React.useState(false);
+    const [language, setLanguage] = React.useState('ro');
+
+    React.useEffect(() => {
+        setLanguage(getLanguage());
+    }, []);
 
     React.useEffect(() => {
         const lastSeenRef = React.createRef();
@@ -41,29 +47,22 @@ export default function Current() {
                 const pricesResponse = await api.get('/api/prices/current');
                 setRates(pricesResponse.data);
                 const session = sessionUtils.getActiveSession();
-                console.log('Active session:', session);
 
                 if (session && session.token) {
                     try {
-                        console.log('Fetching readings with token:', session.token.substring(0, 20) + '...');
                         const readingsResponse = await api.get('/api/readings/last', {
                             headers: { Authorization: `Bearer ${session.token}` }
                         });
-
-                        console.log('Readings response:', readingsResponse.data);
 
                         if (readingsResponse.data) {
                             setIsAuthenticated(true);
                             const readings = readingsResponse.data.readings || {};
 
-                            console.log('Readings data:', readings);
-                            // store readings for later use when user selects a service
                             setLastReadings(readings);
 
                             if (readingsResponse.data.lastReadingDate) {
                                 const formattedDate = new Date(readingsResponse.data.lastReadingDate).toLocaleDateString();
                                 setLastReadingDate(formattedDate);
-                                console.log('Set lastReadingDate to:', formattedDate);
                             }
 
                             setShowSaveOption(true);
@@ -201,22 +200,22 @@ export default function Current() {
                     color: "#2e7d32",
                     textAlign: "center"
                 }}>
-                    Последние показания были сохранены: <strong>{lastReadingDate}</strong>
+                    {t('myReadings', language)}: <strong>{lastReadingDate}</strong>
                 </div>
             )}
             
             <Row>
                 <Col md={6}>
                     <div className="payment-block">
-                        <h2>Calculul plății</h2>
+                        <h2>{t('calculate', language)}</h2>
                         <Select className="payment-select" value={selectedService} onChange={(e) => setSelectedService(e.target.value)}>
-                            <MenuItem value="none" disabled>Selectează serviciul</MenuItem>
+                            <MenuItem value="none" disabled>{t('selectService', language)}</MenuItem>
                             {Object.keys(rates).map((service) => (
                                 <MenuItem key={service} value={service}>{service}</MenuItem>
                             ))}
                         </Select>
                         <div className="input-block">
-                            <label>Indexul precedent:</label>
+                            <label>{t('previousReading', language)}:</label>
                             <input 
                                 className="payment-input" 
                                 type="number" 
@@ -226,25 +225,25 @@ export default function Current() {
                             />
                         </div>
                         <div className="input-block">
-                            <label>Indexul curent:</label>
+                            <label>{t('currentReading', language)}:</label>
                             <input 
                                 className="payment-input" 
                                 type="number" 
                                 value={currentIndex} 
                                 onChange={(e) => setCurrentIndex(Number(e.target.value))}
-                                placeholder="Введите текущие показания" 
+                                placeholder={t('currentReading', language)} 
                             />
                         </div>
                     </div>
                 </Col>
                 <Col md={6}>
                     <div className="checkout">
-                        <p>Pret unitate pentru {selectedService}: <span>{rates[selectedService] ? rates[selectedService] : '-'} lei</span></p>
+                        <p>{t('price', language)} {selectedService}: <span>{rates[selectedService] ? rates[selectedService] : '-'} {t('lei', language)}</span></p>
                         <p>TVA: <span>{tva}</span></p>
-                        <p>Deservirea thenica <span>{SERVICE_FEE}</span></p>
-                        <h3>Total de achitat:
-                             <span>{amountDue} lei</span></h3>
-                        <button onClick={handleCalculation}>Calculează suma</button>
+                        <p>{t('amount', language)} <span>{SERVICE_FEE}</span></p>
+                        <h3>{t('total', language)}:
+                             <span>{amountDue} {t('lei', language)}</span></h3>
+                        <button onClick={handleCalculation}>{t('calculate', language)}</button>
                         {isAuthenticated && currentIndex && (
                             <button 
                                 onClick={handleSaveReadings}
@@ -261,7 +260,7 @@ export default function Current() {
                                     fontWeight: "500"
                                 }}
                             >
-                                Salvează indexuri pentru următoarea dată
+                                {t('save', language)}
                             </button>
                         )}
                     </div>

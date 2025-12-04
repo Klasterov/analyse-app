@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import sessionUtils from "../utils/sessionUtils";
+import { t, getLanguage } from "../utils/i18n";
+import LanguageSelector from "./LanguageSelector";
 import "./Navbar.css";
 import Link from "next/link";
 
@@ -10,7 +12,12 @@ export default function Navbar() {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [userEmail, setUserEmail] = useState("");
     const [remainingTime, setRemainingTime] = useState(null);
+    const [language, setLanguage] = useState('ro');
     const router = useRouter();
+
+    useEffect(() => {
+        setLanguage(getLanguage());
+    }, []);
 
     // Проверяем сессию при загрузке компонента
     useEffect(() => {
@@ -66,12 +73,12 @@ export default function Navbar() {
                 ☰
             </button>
             <ul className={`navbar-menu ${isMenuOpen ? "open" : ""}`}>
-                <Link href="/About" className="navbar-item">Despre noi</Link>
-                <Link href="/analysis-reg" className="navbar-item">Analiza pe regiune</Link>
-                <Link href="/Current" className="navbar-item">Analiza datelor curente</Link>
+                <Link href="/About" className="navbar-item">{t('about', language)}</Link>
+                <Link href="/analysis-reg" className="navbar-item">{t('analysis', language)}</Link>
+                <Link href="/Current" className="navbar-item">{t('current', language)}</Link>
                 {isAuthenticated ? (
                     <>
-                        <Link href="/dashboard" className="navbar-item">Dashboard</Link>
+                        <Link href="/dashboard" className="navbar-item">{t('dashboard', language)}</Link>
                         <span className="navbar-item" style={{ fontSize: "12px", color: "#888" }}>
                             {userEmail}
                         </span>
@@ -87,12 +94,15 @@ export default function Navbar() {
                                 fontSize: "14px"
                             }}
                         >
-                            Deconectare
+                            {t('logout', language)}
                         </button>
                     </>
                 ) : (
-                    <Link href="/LogIn" className="navbar-item">Logare</Link>
+                    <Link href="/LogIn" className="navbar-item">{t('login', language)}</Link>
                 )}
+                <li style={{ listStyle: 'none' }}>
+                    <LanguageSelector />
+                </li>
             </ul>
         </nav>
     );

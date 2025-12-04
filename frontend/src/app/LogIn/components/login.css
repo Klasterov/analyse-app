@@ -1,28 +1,35 @@
-.auth-container{
+.auth-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: white;
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
     margin-top: clamp(80px, 15vw, 150px);
     margin-bottom: clamp(60px, 10vw, 100px);
-    border-radius: 15px;
-    padding: clamp(15px, 3vw, 30px);
+    border-radius: 16px;
+    padding: clamp(20px, 4vw, 40px);
     box-sizing: border-box;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.5);
 }
 
 .login .messages {
     margin-bottom: clamp(15px, 2vw, 20px);
-    text-align: left; 
-    color: red;
+    text-align: left;
+    color: #e74c3c;
+    background-color: #fadbd8;
+    padding: clamp(10px, 2vw, 15px);
+    border-radius: 8px;
+    border-left: 4px solid #e74c3c;
 }
 
 .login .message {
-    font-size: clamp(13px, 3vw, 16px);
-    margin: clamp(3px, 1vw, 5px) 0;
+    font-size: clamp(13px, 3vw, 15px);
+    margin: clamp(4px, 1vw, 6px) 0;
+    font-weight: 500;
 }
 
-.login{
-    background-color: white;
+.login {
+    background: transparent;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -30,145 +37,178 @@
     width: 100%;
 }
 
-.login h2{
+.login h2 {
     margin-top: clamp(30px, 5vw, 50px);
-    font-size: clamp(22px, 5vw, 30px);
-    margin-bottom: clamp(20px, 3vw, 30px);
+    font-size: clamp(24px, 5vw, 32px);
+    margin-bottom: clamp(25px, 4vw, 35px);
+    color: #1e3c72;
+    font-weight: 700;
 }
 
-.login input{
-    width: clamp(200px, 90vw, 700px);
-    height: clamp(36px, 8vw, 44px);
-    border-radius: 8px;
-    border: 1px solid #C4C4C4;
+.login input {
+    width: clamp(220px, 90vw, 350px);
+    height: clamp(44px, 10vw, 52px);
+    border-radius: 10px;
+    border: 2px solid #e0e0e0;
     margin-top: clamp(40px, 8vw, 70px);
-    margin-bottom: clamp(15px, 2vw, 20px);
-    font-size: clamp(12px, 3vw, 14px);
-    padding: clamp(6px, 1vw, 10px);
+    margin-bottom: clamp(16px, 3vw, 24px);
+    font-size: clamp(13px, 3vw, 15px);
+    padding: clamp(8px, 2vw, 12px) clamp(12px, 3vw, 16px);
     box-sizing: border-box;
+    background-color: white;
+    transition: all 0.3s ease;
+    color: #333;
 }
 
-.login input:focus{
+.login input:first-of-type {
+    margin-top: clamp(40px, 8vw, 70px);
+}
+
+.login input:focus {
     outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    border-color: #2a5298;
+    box-shadow: 0 0 12px rgba(42, 82, 152, 0.3);
+    background-color: #f8f9fa;
 }
 
-.login button{
-    background-color: black;
+.login input::placeholder {
+    color: #999;
+}
+
+.login button {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
     color: white;
-    width: clamp(120px, 80vw, 150px);
+    width: clamp(130px, 80vw, 200px);
     border: none;
-    height: clamp(40px, 8vw, 50px);
-    border-radius: 5px;
+    height: clamp(44px, 10vw, 52px);
+    border-radius: 10px;
     margin-bottom: clamp(30px, 5vw, 50px);
     cursor: pointer;
-    font-size: clamp(12px, 3vw, 14px);
-    font-weight: 500;
-    transition: background-color 0.2s;
+    font-size: clamp(13px, 3vw, 15px);
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(42, 82, 152, 0.3);
 }
 
-.login button:hover{
-    background-color: #333;
+.login button:hover {
+    background: linear-gradient(135deg, #163155 0%, #1f4678 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(42, 82, 152, 0.4);
 }
 
-.login p{
-    font-size: clamp(14px, 3.5vw, 18px);
+.login button:active {
+    transform: translateY(0);
+}
+
+.login p {
+    font-size: clamp(14px, 3.5vw, 16px);
     font-weight: 500;
-    color: #000000;
+    color: #2a5298;
     text-decoration: none;
     cursor: pointer;
-    margin: clamp(10px, 2vw, 20px) 0;
+    margin: clamp(12px, 2vw, 20px) 0;
+    transition: all 0.3s ease;
 }
 
-.login p:hover{
+.login p:hover {
+    color: #1e3c72;
     text-decoration: underline;
 }
 
 @media screen and (max-width: 1024px) {
-    .auth-container{
+    .auth-container {
         margin-top: clamp(70px, 12vw, 120px);
         margin-bottom: clamp(50px, 8vw, 80px);
-        padding: clamp(12px, 2.5vw, 25px);
+        padding: clamp(16px, 3vw, 32px);
     }
 
-    .login h2{
+    .login h2 {
         margin-top: clamp(25px, 4vw, 40px);
-        font-size: clamp(20px, 4.5vw, 28px);
+        font-size: clamp(22px, 4.5vw, 30px);
     }
 
-    .login input{
-        width: clamp(180px, 88vw, 650px);
+    .login input {
+        width: clamp(200px, 88vw, 320px);
         margin-top: clamp(35px, 7vw, 60px);
+        height: clamp(40px, 8vw, 48px);
     }
 
-    .login button{
-        width: clamp(110px, 75vw, 140px);
+    .login button {
+        width: clamp(120px, 75vw, 180px);
+        height: clamp(40px, 8vw, 48px);
     }
 }
 
 @media screen and (max-width: 768px) {
-    .auth-container{
+    .auth-container {
         width: 95%;
         margin: clamp(50px, 10vw, 80px) auto 0;
-        border-radius: 15px;
-        padding: clamp(12px, 3vw, 20px);
+        border-radius: 16px;
+        padding: clamp(16px, 3vw, 28px);
     }
 
-    .login h2{
-        font-size: clamp(18px, 4vw, 26px);
+    .login h2 {
+        font-size: clamp(20px, 4vw, 28px);
         margin-top: clamp(20px, 3vw, 30px);
-        margin-bottom: clamp(15px, 2vw, 25px);
+        margin-bottom: clamp(18px, 3vw, 28px);
     }
 
-    .login input{
-        width: clamp(160px, 90vw, 95%);
-        height: clamp(34px, 7vw, 42px);
+    .login input {
+        width: clamp(180px, 90vw, 90%);
+        height: clamp(40px, 7vw, 46px);
         margin-top: clamp(30px, 5vw, 50px);
-        margin-bottom: clamp(12px, 2vw, 18px);
+        margin-bottom: clamp(14px, 2vw, 20px);
+        font-size: clamp(12px, 2.5vw, 14px);
     }
 
-    .login button{
-        width: clamp(100px, 85vw, 130px);
-        height: clamp(36px, 7vw, 45px);
+    .login button {
+        width: clamp(110px, 85vw, 160px);
+        height: clamp(40px, 7vw, 46px);
+        font-size: clamp(12px, 2.5vw, 14px);
         margin-bottom: clamp(25px, 4vw, 40px);
     }
 
-    .login p{
-        font-size: clamp(13px, 3vw, 16px);
+    .login p {
+        font-size: clamp(13px, 3vw, 15px);
+        margin: clamp(10px, 2vw, 18px) 0;
     }
 }
 
 @media screen and (max-width: 480px) {
-    .auth-container{
+    .auth-container {
         width: 100%;
         margin: clamp(40px, 8vw, 60px) 0;
-        padding: clamp(10px, 2vw, 15px);
+        padding: clamp(12px, 3vw, 20px);
     }
 
-    .login h2{
-        font-size: clamp(16px, 3.5vw, 22px);
-        margin-top: clamp(15px, 2.5vw, 25px);
+    .login h2 {
+        font-size: clamp(18px, 3.5vw, 24px);
+        margin-top: clamp(16px, 3vw, 25px);
+        margin-bottom: clamp(16px, 2.5vw, 24px);
     }
 
-    .login input{
+    .login input {
         width: 100%;
-        max-width: 100%;
-        height: clamp(32px, 6vw, 40px);
+        height: clamp(40px, 8vw, 44px);
         margin-top: clamp(25px, 4vw, 40px);
-        font-size: clamp(11px, 2.5vw, 12px);
+        font-size: clamp(12px, 2vw, 13px);
+        margin-bottom: clamp(12px, 2vw, 16px);
     }
 
-    .login button{
+    .login button {
         width: 100%;
-        max-width: 100%;
-        height: clamp(32px, 6vw, 40px);
-        font-size: clamp(11px, 2.5vw, 12px);
+        height: clamp(40px, 8vw, 44px);
+        font-size: clamp(12px, 2vw, 13px);
         margin-bottom: clamp(20px, 3vw, 30px);
     }
 
-    .login p{
+    .login p {
         font-size: clamp(12px, 2.5vw, 14px);
-        margin: clamp(8px, 1.5vw, 15px) 0;
+        margin: clamp(10px, 2vw, 16px) 0;
+    }
+
+    .login .messages {
+        padding: clamp(8px, 1.5vw, 12px);
+        margin-bottom: clamp(12px, 2vw, 18px);
     }
 }
