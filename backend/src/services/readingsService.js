@@ -39,31 +39,42 @@ const readingsService = {
   async saveReadings(userId, readings) {
     try {
       const now = new Date();
-      const result = await pool.query(
-        `UPDATE users 
-        SET 
-          last_gaze_reading = $1,
-          last_electricity_reading = $2,
-          last_heat_reading = $3,
-          last_water_reading = $4,
-          last_reading_date = $5
-        WHERE id = $6
-        RETURNING 
-          id,
-          last_gaze_reading,
-          last_electricity_reading,
-          last_heat_reading,
-          last_water_reading,
-          last_reading_date`,
-        [
-          readings['Gaze naturale'] || null,
-          readings['Energie electrica'] || null,
-          readings['Energie termica'] || null,
-          readings['Apa si canalizare'] || null,
-          now,
-          userId,
-        ]
-      );
+
+      // Build dynamic update to only set columns provided in `readings`
+      const mapping = {
+        'Gaze naturale': 'last_gaze_reading',
+        'Energie electrica': 'last_electricity_reading',
+        'Energie termica': 'last_heat_reading',
+        'Apa si canalizare': 'last_water_reading',
+      };
+
+      const sets = [];
+      const values = [];
+      let idx = 1;
+
+      for (const [key, col] of Object.entries(mapping)) {
+        if (Object.prototype.hasOwnProperty.call(readings, key) && readings[key] !== null && readings[key] !== undefined) {
+          sets.push(`${col} = $${idx}`);
+          values.push(readings[key]);
+          idx++;
+        }
+      }
+
+      // Always update last_reading_date when at least one reading changed
+      if (sets.length === 0) {
+        throw new Error('No readings provided to update');
+      }
+
+      sets.push(`last_reading_date = $${idx}`);
+      values.push(now);
+      idx++;
+
+      // add WHERE id
+      values.push(userId);
+
+      const sql = `UPDATE users SET ${sets.join(', ')} WHERE id = $${idx} RETURNING id, last_gaze_reading, last_electricity_reading, last_heat_reading, last_water_reading, last_reading_date`;
+
+      const result = await pool.query(sql, values);
 
       if (result.rows.length === 0) {
         throw new Error('User not found');

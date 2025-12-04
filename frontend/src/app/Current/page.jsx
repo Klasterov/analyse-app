@@ -29,6 +29,7 @@ export default function Current() {
     const [tva, setTva] = React.useState(0);
     const [isAuthenticated, setIsAuthenticated] = React.useState(false);
     const [lastReadingDate, setLastReadingDate] = React.useState(null);
+    const [lastReadings, setLastReadings] = React.useState({});
     const [showSaveOption, setShowSaveOption] = React.useState(false);
 
     React.useEffect(() => {
@@ -56,10 +57,8 @@ export default function Current() {
                             const readings = readingsResponse.data.readings || {};
 
                             console.log('Readings data:', readings);
-                            if (readings['Gaze naturale']) {
-                                setPreviousIndex(readings['Gaze naturale']);
-                                console.log('Set previousIndex to:', readings['Gaze naturale']);
-                            }
+                            // store readings for later use when user selects a service
+                            setLastReadings(readings);
 
                             if (readingsResponse.data.lastReadingDate) {
                                 const formattedDate = new Date(readingsResponse.data.lastReadingDate).toLocaleDateString();
@@ -124,6 +123,16 @@ export default function Current() {
         };
     }, []);
 
+    // When user selects a service, populate the previous index from fetched readings
+    React.useEffect(() => {
+        if (selectedService && selectedService !== 'none' && lastReadings) {
+            const val = lastReadings[selectedService];
+            if (val != null) {
+                setPreviousIndex(val);
+            }
+        }
+    }, [selectedService, lastReadings]);
+
     const handleCalculation = () => {
         if (selectedService !== "none" && previousIndex && currentIndex) {
             const consumption = Math.max(0, currentIndex - previousIndex);
@@ -143,12 +152,19 @@ export default function Current() {
                 return;
             }
 
-            const readings = {
-                'Gaze naturale': previousIndex ? Number(previousIndex) : null,
-                'Energie electrica': selectedService === 'Energie electrica' ? Number(currentIndex) : null,
-                'Energie termica': selectedService === 'Energie termica' ? Number(currentIndex) : null,
-                'Apa si canalizare': selectedService === 'Apa si canalizare' ? Number(currentIndex) : null,
-            };
+            // Only update the selected service to avoid overwriting other services with null
+            if (!selectedService || selectedService === 'none') {
+                alert('Пожалуйста, выберите услугу для сохранения показаний');
+                return;
+            }
+
+            if (currentIndex === '' || currentIndex === null || isNaN(Number(currentIndex))) {
+                alert('Пожалуйста, введите корректные текущие показания');
+                return;
+            }
+
+            const readings = {};
+            readings[selectedService] = Number(currentIndex);
 
             await api.post(
                 '/api/readings/save',
